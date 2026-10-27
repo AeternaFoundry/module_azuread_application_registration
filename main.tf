@@ -16,5 +16,15 @@ resource "azuread_application_registration" "application_registrations" {
   sign_in_audience                       = each.value.sign_in_audience
   support_url                            = each.value.support_url
   terms_of_service_url                   = each.value.terms_of_service_url
+
+  dynamic "timeouts" {
+    for_each = each.value.timeouts != null ? [each.value.timeouts] : []
+    content {
+      create = timeouts.value.create
+      delete = timeouts.value.delete
+      read   = timeouts.value.read
+      update = timeouts.value.update
+    }
+  }
 }
 
